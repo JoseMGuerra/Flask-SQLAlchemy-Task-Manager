@@ -5,7 +5,7 @@
 ## Setting up a basic Flask Application
 
 <details>
-<summary>Basic Setup</summary>
+<summary>Basic Flask Setup</summary>
 
 - pip3 install Flask-SQLAlchemy psycopg2
 
@@ -70,6 +70,95 @@
 - Create a new file - touch taskmanager/templates/base.html
 - Create a Html5 boilerplate.
 - Run the file - python3 run.py
+
+</details>
+
+## Creating the ORM Database
+
+<details>
+<summary>Basic Database setup</summary>
+
+- Create a new file within our taskmanager package - touch taskmanager/models.py
+- Setup models.py by importing db from taskmanager
+- Create new class-based tables by:
+
+        class Category(db.Model):
+            # schema for the Category model
+            id = db.Column(db.Integer, primary_key=True)
+            category_name = db.Column(db.String(25), unique=True, nullable=False)
+            tasks = db.relationship("Task", backref="category", cascade="all, delete", lazy=True)
+
+            def __repr__(self):
+                # __repr__ to represent themselves as a String
+                return self.category_name
+        
+
+        class Task(db.Model):
+            # schema for the Task model
+            id = db.Column(db.Integer, primary_key=True)
+            task_name = db.Column(db.String(50), unique=True, nullable=False)
+            task_description = db.Column(db.Text, nullable=False)
+            is_urgent = db.Column(db.Boolean, default=False, nullable=False)
+            due_data = db.Column(db.Date, nullable=False)
+            category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
+
+            def __repr__(self):
+                # __repr__ to represent themselves as a String
+                return "#{0} - Task: {1} | Urgent: {2}".format(
+                    self.id, self.task_name, self.is_urgent
+                    )
+- Return to  the routes file and at the top import
+
+        from taskmanager.models import Category, Task
+
+- Create the taskmanager database in the postgres CLI
+
+        gitpod /workspace/Flask-SQLAlchemy-Task-Manager (main) $ set_pg
+        gitpod /workspace/Flask-SQLAlchemy-Task-Manager (main) $ psql
+        psql (12.12 (Ubuntu 12.12-1.pgdg20.04+1))
+        Type "help" for help.
+
+        postgres=# CREATE DATABASE taskmanager;
+        CREATE DATABASE
+
+- Connect to taskmanager database
+
+        postgres=# \c taskmanager;
+        You are now connected to database "taskmanager" as user "gitpod".
+        taskmanager=# 
+
+- Migrate and generate our new tables using python. (!IMPORTANT: This have to be performed every time we make changes to our models, ie: when adding a new column, so our database knows about the changes made)
+  - Access the python3 interpreter
+  - Import db from our taskmanager package
+  - Perform db.create_all() method, now our models have been created.
+  - Exit the interpreter - exit()
+  
+        gitpod /workspace/Flask-SQLAlchemy-Task-Manager (main) $ python3
+        Python 3.8.11 (default, Sep 28 2022, 18:47:08) 
+        [GCC 9.4.0] on linux
+        Type "help", "copyright", "credits" or "license" for more information.
+        >>> from taskmanager import db
+        /workspace/.pip-modules/lib/python3.8/site-packages/flask_sqlalchemy/__init__.py:872: FSADeprecationWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be disabled by default in the future.  Set it to True or False to suppress this warning.
+        warnings.warn(FSADeprecationWarning(
+        >>> db.create_all()
+        >>> exit()
+
+- To check that our table have been created in postgresql:
+
+        gitpod /workspace/Flask-SQLAlchemy-Task-Manager (main) $ psql -d taskmanager
+        psql (12.12 (Ubuntu 12.12-1.pgdg20.04+1))
+        Type "help" for help.
+
+        taskmanager=# \dt
+                List of relations
+        Schema |   Name   | Type  | Owner  
+        --------+----------+-------+--------
+        public | category | table | gitpod
+        public | task     | table | gitpod
+        (2 rows)
+
+        taskmanager=# \q
+
 </details>
 ---
 
