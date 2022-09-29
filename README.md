@@ -13,7 +13,7 @@
 
 - Set env.py by:
 
-        import os
+        import os   # so our hidden environment variables are visible within our system
 
         os.eviron.setdefault("IP","")
         os.eviron.setdefault("PORT","")
@@ -34,7 +34,7 @@
         from flask import Flask
         from flask_sqlalchemy import SQLAlchemy
         if os.path.exists("env.py"):
-            import env # noqa
+            import env # noqa (noqa => no quality assurance)
 
         app = Flask(__name__)
         app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
@@ -42,7 +42,7 @@
 
         db = SQLAlchemy(app)
 
-        from taskmanager import routes # noq
+        from taskmanager import routes # noqa
 
 - Create a new file - touch taskmanager/routes.py
 - Set routes.py by:
@@ -143,7 +143,7 @@
         >>> db.create_all()
         >>> exit()
 
-- To check that our table have been created in postgresql:
+- To check if our table/s exists within our database:
 
         gitpod /workspace/Flask-SQLAlchemy-Task-Manager (main) $ psql -d taskmanager
         psql (12.12 (Ubuntu 12.12-1.pgdg20.04+1))
@@ -160,6 +160,69 @@
         taskmanager=# \q
 
 </details>
+
+## Creating a Basic FrontEnd User Interface template using Template Inheritance
+
+<details>
+<summary>Basic FrontEnd HTML/CSS</summary>
+
+- Add Materialize CDN (css and javascript) links to our base.html page
+- Create a new directory called static within our taskmanager package 
+and create our css and js directories and files.
+Also, it might require a hard reload to see the changes made in this files.
+
+        mkdir taskmanager/static
+
+        mkdir taskmanager/static/css
+        mkdir taskmanager/static/js
+
+        touch taskmanager/static/css/style.css
+        touch taskmanager/static/js/script.js
+
+- Link our static files using url_for{{}} method.(paying attention to quotation marks)
+
+        <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+        />
+
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+- Add a Mobile Collapse Navbar from Materialize Components
+
+  - Add a \<header>...\</header> tags and paste navbar code within
+  - Change Logo Name
+  - Use url_for{{}} method to link our pages to routes file
+  - Add font-awesome CDN link above the Materialize
+
+  - Add the Sidenav initialization code to script.js
+
+        document.addEventListener("DOMContentLoaded", function () {
+        // sidenav initialization
+        let sidenav = document.querySelectorAll(".sidenav");
+        M.Sidenav.init(sidenav);
+        });
+
+- Add \<main>...\</main> tags and Jinja content blocks  within
+
+        {% block content %} {% endblock %}
+
+- Add Footer and customize
+- Add sticky footer code to style.css file
+- Create new template html file 
+
+        touch taskmanager/templates/tasks.html
+
+- Add Jinja templates to tasks.html to extend our base.html
+
+        {% extends "base.html" %} 
+        {% block content %} 
+
+        {% endblock %}
+
+</details>
+
+
 ---
 
 Happy coding!
