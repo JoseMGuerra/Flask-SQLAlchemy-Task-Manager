@@ -8,7 +8,7 @@ main {
     flex: 1 0 auto;
 }
 
-.card-panel {
+.card-panel-add-category {
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;

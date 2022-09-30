@@ -222,7 +222,7 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
-## Adding Categories to our Database
+## Create new Categories for our Database
 
 <details>
 <summary>Basic setup for adding new category</summary>
@@ -302,9 +302,48 @@ Also, it might require a hard reload to see the changes made in this files.
             db.session.commit()
             return redirect(url_for("categories"))
 
-
 </details>
 
----
+## Read Categories from our Database
 
-Happy coding!
+<details>
+<summary>Basics setup for viewing categories</summary>
+
+- Add a card-panel to the categories.html template
+
+        <div class="row">
+        <div class="col s12 m6 l3">
+            <div class="card light-blue darken-4 center-align">
+            <div class="card-content white-text">
+                <span class="card-title">Card Title</span>
+            </div>
+            <div class="card-action">
+                <a href="#" class="btn green accent-4">Edit</a>
+                <a href="#" class="btn red">Delete</a>
+            </div>
+            </div>
+        </div>
+        </div>
+
+- Add a query for all categories sorted by name, to the routes categories function
+
+        @app.route("/categories")
+        def categories():
+            categories = list(Category.query.order_by(Category.category_name).all())
+            return render_template("categories.html", categories=categories)
+
+- Add a loop using Jinja template format, to the categories card
+
+        {% for category in categories %}
+        <div class="col s12 m6 l3">
+            <div class="card light-blue darken-4 center-align">
+            <div class="card-content white-text">
+                <span class="card-title">{{ category.category_name }}</span>
+            </div>
+            <div class="card-action">
+                <a href="#" class="btn green accent-4">Edit</a>
+                <a href="#" class="btn red">Delete</a>
+            </div>
+            </div>
+        </div>
+        {% endfor %}
