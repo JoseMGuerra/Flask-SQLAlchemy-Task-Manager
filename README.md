@@ -61,9 +61,9 @@
 
         if __name__ == "__main__":
             app.run(
-                host=os.environ.get("IP"),
-                port=int(os.environ.get("PORT")),
-                debug=os.environ.get("DEBUG"),
+            host=os.environ.get("IP"),
+            port=int(os.environ.get("PORT")),
+            debug=os.environ.get("DEBUG"),
             )
 
 - Create a new directory - mkdir taskmanager/templates
@@ -89,8 +89,8 @@
             tasks = db.relationship("Task", backref="category", cascade="all, delete", lazy=True)
 
             def __repr__(self):
-                # __repr__ to represent themselves as a String
-                return self.category_name
+            # __repr__ to represent themselves as a String
+            return self.category_name
         
 
         class Task(db.Model):
@@ -103,10 +103,10 @@
             category_id = db.Column(db.Integer, db.ForeignKey("category.id", ondelete="CASCADE"), nullable=False)
 
             def __repr__(self):
-                # __repr__ to represent themselves as a String
-                return "#{0} - Task: {1} | Urgent: {2}".format(
-                    self.id, self.task_name, self.is_urgent
-                    )
+            # __repr__ to represent themselves as a String
+            return "#{0} - Task: {1} | Urgent: {2}".format(
+                self.id, self.task_name, self.is_urgent
+                )
 - Return to  the routes file and at the top import
 
         from taskmanager.models import Category, Task
@@ -150,7 +150,7 @@
         Type "help" for help.
 
         taskmanager=# \dt
-                List of relations
+            List of relations
         Schema |   Name   | Type  | Owner  
         --------+----------+-------+--------
         public | category | table | gitpod
@@ -222,6 +222,88 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
+## Adding Categories to our Database
+
+<details>
+<summary>Basic setup for adding new category</summary>
+
+- Add two new template html files
+
+        touch taskmanager/templates/categories.html
+        touch taskmanager/templates/add_category.html
+
+- Extend the files from the base.html
+
+        {% extends "base.html" %}
+        {% block content %}
+
+        {% endblock %}
+
+- Add a button to categories.html that invokes the add_category() function
+
+        <a
+        href="{{ url_for('add_category') }}"
+        class="btn-large light-blue darken-2"
+        >
+
+- Create a new route that populates categories.html and link it to our navbar
+
+        @app.route("/categories")
+        def categories():
+        return render_template("categories.html")
+
+        <li><a href="{{ url_for('categories') }}">Categories</a></li>
+
+- Create a new route that render the template to add a new category, using the methods "GET" and "POST"
+
+        @app.route("/add_category", methods=["GET", "POST"])
+        def add_category():
+        return render_template("add_category.html")
+
+- Add a form to the add_category.html template using the "POST" method
+
+        <form class="col s12" method="POST" action="{{ url_for('add_category') }}">
+        <!-- category name -->
+        <div class="row">
+        <div class="input-field col s12">
+            <i class="fas fa-folder-open prefix light-blue-text text-darken-4"></i>
+            <input
+            id="category_name"
+            name="category_name"
+            minlength="3"
+            maxlength="25"
+            type="text"
+            class="validate"
+            required
+            />
+            <label for="category_name">Category Name</label>
+        </div>
+        </div>
+        <!-- ./category name -->
+
+        <!-- submit button -->
+        <div class="row">
+        <div class="col s12 center-align">
+            <button type="submit" class="btn-large light-blue darken-1">
+            Add Category <i class="fas fa-plus-square right"></i>
+            </button>
+        </div>
+        </div>
+        <!-- ./submit button -->
+        </form>
+
+- Import request, redirect and url_for from flask
+
+- Add the request method functionality to our add_category function
+
+        if request.method == "POST":
+            category = Category(category_name=request.form.get("category_name"))
+            db.session.add(category)
+            db.session.commit()
+            return redirect(url_for("categories"))
+
+
+</details>
 
 ---
 
