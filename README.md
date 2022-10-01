@@ -357,7 +357,7 @@ Also, it might require a hard reload to see the changes made in this files.
 
 - Add a new file to the templates directory
 
-        By making a copy of add_category.html  and change all necessary wording to edit.
+        By making a copy of the add_category.html file and changing all necessary wording to edit.
 
         ie: edit_category.html, action="{{ url_for('edit_category') }}", etc...
 
@@ -392,6 +392,38 @@ Also, it might require a hard reload to see the changes made in this files.
 
         href="{{ url_for('delete_category', category_id=category.id) }}"
 
+</details>
+
+## Addding Tasks
+<details>
+<summary>Basic setup for adding tasks to our database</summary>
+
+- Add a link to tasks.html that invokes the add_task function
+
+        <a href="{{ url_for('add_task') }}" class="btn-large light-blue darken-2">
+        Add Task <i class="fas fa-plus-square right"></i>
+        </a>
+
+- Add the add_task function to routes file
+
+        @app.route("/add_task", methods=["GET", "POST"])
+        def add_task():
+
+                db.session.add(task)
+                db.session.commit()
+                return redirect(url_for("home"))
+            return render_template("add_task.html", categories=categories)
+
+- Add a new file to templates directory called add_task.html
+
+        By making a copy of the add_category.html file and changing all necessary wording to task.
+
+- Add more form fields for:
+
+        Task description
+        Due date
+        Is urgent
+        Category Id
 
 </details>
 
