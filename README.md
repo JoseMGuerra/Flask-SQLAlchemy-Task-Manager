@@ -222,7 +222,7 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
-## Create new Categories for our Database
+## [C]reate new Categories for our Database
 
 <details>
 <summary>Basic setup for adding new category</summary>
@@ -304,7 +304,7 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
-## Read Categories from our Database
+## [R]ead Categories from our Database
 
 <details>
 <summary>Basics setup for viewing categories</summary>
@@ -347,3 +347,54 @@ Also, it might require a hard reload to see the changes made in this files.
             </div>
         </div>
         {% endfor %}
+
+</details>
+
+## [U]pdate the Database records
+
+<details>
+<summary>Basic setup for editing our Database</summary>
+
+- Add a new file to the templates directory
+
+        By making a copy of add_category.html  and change all necessary wording to edit.
+
+        ie: edit_category.html, action="{{ url_for('edit_category') }}", etc...
+
+- Create a new function in the routes file called edit_category
+
+        @app.route("/edit_category/<int:category_id>", methods=["GET", "POST"])
+        def edit_category(category_id):
+            category = Category.query.get_or_404(category_id)
+            if request.method == "POST":
+                category.category_name = request.form.get("category_name")
+                db.session.commit()
+                return redirect(url_for("categories"))
+            return render_template("edit_category.html", category=category)
+
+</details>
+
+## [D]elete categories 
+
+<details>
+<summary>Basic setup for deleting records from the database</summary>
+
+- Create a new function in the routes file
+
+        @app.route("/delete_category/<int:category_id>")
+        def delete_category(category_id):
+        category = Category.query.get_or_404(category_id)
+        db.session.delete(category)
+        db.session.commit()
+        return redirect(url_for("categories"))
+
+- Update delete link in categories.html
+
+        href="{{ url_for('delete_category', category_id=category.id) }}"
+
+
+</details>
+
+----
+
+Happy Coding!
