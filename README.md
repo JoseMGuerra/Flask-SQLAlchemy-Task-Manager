@@ -425,8 +425,27 @@ Also, it might require a hard reload to see the changes made in this files.
         Is urgent
         Category Id
 
+- Initialize form with Javascript
+
+        // select initialization
+        let selects = document.querySelectorAll("select");
+        M.FormSelect.init(selects);
+
 </details>
 
+## Viewing New Tasks
+
+<details>
+<summary>Basic setup for displaying the  new tasks created</summary>
+
+- Add a query all our task to the routes home function
+
+        tasks = list(Task.query.order_by(Task.id).all())
+
+- Add a materialize collapsible to task.html
+- Initialize the collapsible with Javascript
+
+</details>
 ----
 
 Happy Coding!
