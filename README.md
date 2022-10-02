@@ -499,6 +499,21 @@ Also, it might require a hard reload to see the changes made in this files.
         $ echo web: python run.py > Procfile
         ### delete this blank line after code line to avoid problems when running the app ###
 
+- Add and commit changes to GitHub
+- Create a new app in Heroku with a unique name.
+- In the Resources tap type "heroku postgres" in the add-ons and select the free Hobby Dev option
+<details>
+<summary>heroku images</summary>
+
+![resources](readme-images/heroku-hobby-dev.png)
+![hobby dev](readme-images/heroku-postgres.png)
+</details>
+
+- In the Settings tab add our environmental variables
+
+        IP, PORT, SECRET_KEY, DEBUG 
+
+- !Important: remember to set DEBUG to False prior submitting the project
 
 </details>
 
