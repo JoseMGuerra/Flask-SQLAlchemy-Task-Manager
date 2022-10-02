@@ -446,6 +446,17 @@ Also, it might require a hard reload to see the changes made in this files.
 - Initialize the collapsible with Javascript
 
 </details>
+
+## Edit  Tasks
+
+<details>
+<summary>Basic setup for editing the tasks created</summary>
+
+- Create a new function edit_task from coping edit_categories  function
+- Create a new template for edit_task.html by coping edit_category.html
+
+</details>
+
 ----
 
 Happy Coding!
