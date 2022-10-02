@@ -475,7 +475,7 @@ Also, it might require a hard reload to see the changes made in this files.
 <details>
 <summary>Basic deployment instructions</summary>
 
-- Check install packages
+- Check installed packages
 
          $ pip3 list
 
@@ -514,6 +514,11 @@ Also, it might require a hard reload to see the changes made in this files.
         IP, PORT, SECRET_KEY, DEBUG 
 
 - !Important: remember to set DEBUG to False prior submitting the project
+- Change \__init__.py file so it connect to heroku postgress database when DEVELOPMENT environ is set to False
+- In the deploy tab select GitHub
+- Type the app name as it appears in GitHub
+- Choose Main Branch and Click Enable Automatic Deploy
+- Finally click Deploy Branch
 
 </details>
 
