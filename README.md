@@ -457,6 +457,19 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
+## Delete task
+
+<details>
+<summary>Basic setup for deleting a task record</summary>
+
+- Create a new function delete_task in the routes file from delete_category
+
+- Add a delete link in task.html
+
+        href="{{ url_for('delete_task', task_id=task.id) }}"
+
+</details>
+
 ----
 
 Happy Coding!
