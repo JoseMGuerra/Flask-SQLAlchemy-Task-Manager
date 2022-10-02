@@ -470,6 +470,38 @@ Also, it might require a hard reload to see the changes made in this files.
 
 </details>
 
+## Deployment to Heroku
+
+<details>
+<summary>Basic deployment instructions</summary>
+
+- Check install packages
+
+         $ pip3 list
+
+        Package          Version
+        ---------------- -------
+        click            8.1.3
+        Flask            2.2.2
+        Flask-SQLAlchemy 2.5.1
+        greenlet         1.1.3
+        itsdangerous     2.1.2
+        psycopg2         2.9.3
+        SQLAlchemy       1.4.41
+        Werkzeug         2.2.2
+
+- Freeze and install packages to requirements.txt file
+
+        $ pip3 freeze --local > requirements.txt
+
+- Create a Procfile to tell Heroku which file runs the app
+
+        $ echo web: python run.py > Procfile
+        ### delete this blank line after code line to avoid problems when running the app ###
+
+
+</details>
+
 ----
 
 Happy Coding!
